@@ -15,7 +15,7 @@ public class GeradorDocIdController {
 	@ResponseBody
 	public String getCPF() {
 		String cpf = CPFHandler.generateCPF()[0]; 
-		String json = "{\"autor\":\"https://www.linkedin.com/in/mariobacellar/\",\"aviso\":\"Gerador de CPFs inválidos. Este CPF não tem o DV válido. CPF usado somente para teste de massa de daos\",\"cpf\":\""+cpf+"\"}";
+		String json = "{\"autor\":\"https://www.linkedin.com/in/mariobacellar/\",\"aviso\":\"Gerador de CPFs inválidos. Este CPF não tem o DV válido. CPF usado somente para teste de massa de dados\",\"cpf\":\""+cpf+"\"}";
 		return json;
 	}
 
@@ -24,7 +24,7 @@ public class GeradorDocIdController {
 	@ResponseBody
 	public String getCPF_Fmt() {
 		String cpf = CPFHandler.generateCPF()[1]; 
-		String json = "{\"autor\":\"https://www.linkedin.com/in/mariobacellar/\",\"aviso\":\"Gerador de CPFs inválidos. Este CPF não tem o DV válido. CPF usado somente para teste de massa de daos\",\"cpf\":\""+cpf+"\"}";
+		String json = "{\"autor\":\"https://www.linkedin.com/in/mariobacellar/\",\"aviso\":\"Gerador de CPFs inválidos. Este CPF não tem o DV válido. CPF usado somente para teste de massa de dados\",\"cpf\":\""+cpf+"\"}";
 		return json;
 	}
 
