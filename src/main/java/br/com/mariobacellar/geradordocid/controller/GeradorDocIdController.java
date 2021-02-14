@@ -11,6 +11,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/mariobacellar")
 public class GeradorDocIdController {
 
+
+	@RequestMapping("")
+	@ResponseBody
+	public String home() {
+		return 	"{"
+				+ "\"autor\":\"https://www.linkedin.com/in/mariobacellar/\","
+				+ "\"gtihub\":\"https://github.com/mariobacellar/generatedocid\","
+				+ "\"APIs\":["						
+				+     			"{"
+				+ 					"\"API\":\"CPF -> Gerador de CPFs inválidos. Este CPF não tem o DV válido. CPF usado somente para teste de massa de dados\","
+				+ 					"\"URL\":\"https://geradordocid.herokuapp.com/api/mariobacellar/cpf\""
+				+ 				"},"
+				+     			"{"
+				+ 					"\"API\":\"CNPJ -> Gerador de CNPJs inválidos. Este CNPJ não tem o DV válido. CNPJ usado somente para teste de massa de dados\","
+				+ 					"\"URL\":\"https://geradordocid.herokuapp.com/api/mariobacellar/cnpj\""
+				+ 				"}"
+				+ 			"]" 
+				+"}";
+	}
+
 	@RequestMapping("/cpf")
 	@ResponseBody
 	public String getCPF() {
