@@ -1,6 +1,11 @@
 package br.com.mariobacellar.geradordocid.util;
 
+import java.text.DecimalFormat;
+
 public class CPFHandler {
+
+	private static final int SIZE_OF_CNPJ = 14;
+	private static final int SIZE_OF_CPF = 11;
 
 	public static String[] generateCPF() {
 		try {
@@ -17,17 +22,12 @@ public class CPFHandler {
 			int dig007 = (int) (Math.random() * ((max - min) + 1)) + min;
 			int dig008 = (int) (Math.random() * ((max - min) + 1)) + min;
 			int dig009 = (int) (Math.random() * ((max - min) + 1)) + min;
-			int digdv1 = (int) (Math.random() * ((max - min) + 1)) + min;
-			int digdv2 = (int) (Math.random() * ((max - min) + 1)) + min;
 
-			int dvERRADO = calculaCPFDV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009);
+			String dvERRADO = calculaCPFDV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009);
 
-			String cpf = "" + dig001 + dig002 + dig003 + dig004 + dig005 + dig006 + dig007 + dig008 + dig009 + dvERRADO;
-			String cpf_fmt = "" + dig001 + dig002 + dig003 + "." + dig004 + dig005 + dig006 + "." + dig007 + dig008 + dig009 + "-" + dvERRADO;
-
-//			System.out.println("CPF:["+cpf+"]");
-//			System.out.println("CPF FMT:["+cpf_fmt+"]");
-
+			String cpf     = "" + dig001 + dig002 + dig003 + dig004 + dig005 + dig006 + dig007 + dig008 + dig009 + dvERRADO;
+			String cpf_fmt = formatCpf(cpf); 
+			
 			String[] ret = new String[] { cpf, cpf_fmt };
 			return ret;
 
@@ -37,7 +37,7 @@ public class CPFHandler {
 		}
 	}
 
-	public static int calculaCPFDV_ERRADO(int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9)
+	public static String calculaCPFDV_ERRADO(int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9)
 			throws Exception {
 
 		// Primeiro DV
@@ -52,8 +52,7 @@ public class CPFHandler {
 		int xd9 = d9 * 2;
 		int xdv1 = xd1 + xd2 + xd3 + xd4 + xd5 + xd6 + xd7 + xd8 + xd9;
 		int dv1 = 11 - (xdv1 % 11);
-		if (dv1 >= 10)
-			dv1 = 0;
+		if (dv1 >= 10) dv1 = 0;
 
 		// Segeundo DV
 		xd1 = d1 * 11;
@@ -68,29 +67,53 @@ public class CPFHandler {
 		int xdv = dv1 * 2;
 		int xdv2 = xd1 + xd2 + xd3 + xd4 + xd5 + xd6 + xd7 + xd8 + xd9 + xdv;
 		int dv2 = 11 - (xdv2 % 11);
-		if (dv2 >= 10)
-			dv2 = 0;
+		if (dv2 >= 10) dv2 = 0;
 
 		String ret = "" + dv1 + dv2;
-		int iret = Integer.parseInt(ret);
+		int   iret = Integer.parseInt(ret);
 
 		// para retornar ERRADO
-		if (iret == 0)
-			iret = 1;
-		else if (iret > 0)
-			iret--;
+		if (iret == 0) 	iret = 1; else 
+		if (iret > 0 )	iret--;
 
-		return iret;
+		if (iret<10) ret = "0" + iret;
+
+		return ret;
+	}
+
+	public static String formatCnpj(String cnpj) throws Exception {
+		if (cnpj != null) {
+			cnpj = cnpj.replaceAll("\\D", "");
+			if ((cnpj.length() == SIZE_OF_CNPJ)) {
+				return cnpj.replaceAll("([0-9]{2})([0-9]{3})([0-9]{3})([0-9]{4})([0-9]{2})", "$1\\.$2\\.$3/$4-$5");
+			}
+		}
+		throw new Exception("Cnpj inválido.");
+	}
+
+	public static String formatCpf(String cpf) throws Exception {
+		if (cpf != null) {
+			cpf = cpf.replaceAll("\\D", "");
+			if (cpf.length() == SIZE_OF_CPF) {
+				return cpf.replaceAll("([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})", "$1\\.$2\\.$3-$4");
+			}
+		}
+		throw new Exception("Cpf inválido.");
 	}
 
 	public static void main(String[] args) {
 		try {
+			
 			String[] resp = CPFHandler.generateCPF();
 			System.out.println("CPF:[" + resp[0] + "]");
 			System.out.println("CPF FMT:[" + resp[1] + "]");
 
-			String dverrado = "" + CPFHandler.calculaCPFDV_ERRADO(0, 1, 5, 0, 6, 5, 6, 3, 7);
+			// 057.703.300-6
+			String dverrado = "" + CPFHandler.calculaCPFDV_ERRADO(0, 5, 7, 7, 0, 3, 3, 0, 0);
 			System.out.println("dverrado:[" + dverrado + "]");
+
+			String fmtcpf = formatCpf("05770330006");
+			System.out.println("fmtcpf:[" + fmtcpf + "]");
 
 		} catch (Exception e) {
 			// TODO: handle exception
