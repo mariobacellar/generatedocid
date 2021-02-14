@@ -1,10 +1,94 @@
 package br.com.mariobacellar.geradordocid.util;
 
-public class CPFHandler {
+public class CPFCNPJHandler {
 
 	private static final int SIZE_OF_CNPJ = 14;
 	private static final int SIZE_OF_CPF = 11;
+	
+	public static String[] generateCNPJ() {
+		try {
 
+			int min = 0;
+			int max = 9;
+
+			int dig001 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig002 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig003 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig004 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig005 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig006 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig007 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig008 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig009 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig010 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig011 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig012 = (int) (Math.random() * ((max - min) + 1)) + min;
+			int dig013 = (int) (Math.random() * ((max - min) + 1)) + min;
+
+			String dvERRADO  = calculaCNPJ_DV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009, dig010, dig011, dig012, dig013);
+			String cnpj      = ""                 + dig001+ dig002+ dig003+ dig004+ dig005+ dig006+ dig007+ dig008+ dig009+ dig010+ dig011+ dig012+ dvERRADO;
+			String cnpj_fmt  = formatCnpj(cnpj); 
+			String[] ret     = new String[] { cnpj, cnpj_fmt };
+			return ret;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String calculaCNPJ_DV_ERRADO(int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13) throws Exception {
+
+		// Primeiro DV
+		int xd1  = d1  * 5;
+		int xd2  = d2  * 4;
+		int xd3  = d3  * 3;
+		int xd4  = d4  * 2;
+		int xd5  = d5  * 9;
+		int xd6  = d6  * 8;
+		int xd7  = d7  * 7;
+		int xd8  = d8  * 6;
+		int xd9  = d9  * 5;
+		int xd10 = d10 * 4;
+		int xd11 = d11 * 3;
+		int xd12 = d12 * 2;
+		
+		int xdv1 = xd1 + xd2 + xd3 + xd4 + xd5 + xd6 + xd7 + xd8 + xd9 + xd10+ xd11 + xd12;
+		int dv1 = 11 - (xdv1 % 11);
+		if (dv1 >= 10) dv1 = 0;
+
+		// Segeundo DV
+		xd1  = d1  * 6;
+		xd2  = d2  * 5;
+		xd3  = d3  * 4;
+		xd4  = d4  * 3;
+		xd5  = d5  * 2;
+		xd6  = d6  * 9;
+		xd7  = d7  * 8;
+		xd8  = d8  * 7;
+		xd9  = d9  * 6;
+		xd10 = d10 * 5;
+		xd11 = d11 * 4;
+		xd12 = d12 * 3;
+	int	xd13 = d13 * 2;
+				
+		int xdv2 = xd1 + xd2 + xd3 + xd4 + xd5 + xd6 + xd7 + xd8 + xd9 + xd10 + xd11 + xd12 + xd13;
+		int dv2 = 11 - (xdv2 % 11);
+		if (dv2 >= 10) dv2 = 0;
+
+		String ret = "" + dv1 + dv2;
+		int   iret = Integer.parseInt(ret);
+
+		// para retornar ERRADO
+		if (iret == 0) 	iret = 1; else 
+		if (iret > 0 )	iret--;
+
+		if (iret<10) ret = "0" + iret;
+
+		return ret;
+	}
+
+	
 	public static String[] generateCPF() {
 		try {
 
@@ -21,7 +105,7 @@ public class CPFHandler {
 			int dig008 = (int) (Math.random() * ((max - min) + 1)) + min;
 			int dig009 = (int) (Math.random() * ((max - min) + 1)) + min;
 
-			String dvERRADO = calculaCPFDV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009);
+			String dvERRADO = calculaCPF_DV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009);
 			String cpf      = ""                + dig001+ dig002+ dig003+ dig004+ dig005+ dig006+ dig007+ dig008+ dig009 + dvERRADO;
 			String cpf_fmt  = formatCpf(cpf); 
 			String[] ret    = new String[] { cpf, cpf_fmt };
@@ -33,7 +117,7 @@ public class CPFHandler {
 		}
 	}
 
-	public static String calculaCPFDV_ERRADO(int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9)
+	public static String calculaCPF_DV_ERRADO(int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9)
 			throws Exception {
 
 		// Primeiro DV
@@ -96,25 +180,6 @@ public class CPFHandler {
 		}
 		throw new Exception("Cpf inválido.");
 	}
-
-	public static void main(String[] args) {
-		try {
-			
-			String[] resp = CPFHandler.generateCPF();
-			System.out.println("CPF:[" + resp[0] + "]");
-			System.out.println("CPF FMT:[" + resp[1] + "]");
-
-			// 057.703.300-6
-			String dverrado = "" + CPFHandler.calculaCPFDV_ERRADO(0, 5, 7, 7, 0, 3, 3, 0, 0);
-			System.out.println("dverrado:[" + dverrado + "]");
-
-			String fmtcpf = formatCpf("05770330006");
-			System.out.println("fmtcpf:[" + fmtcpf + "]");
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
+	
 
 }
