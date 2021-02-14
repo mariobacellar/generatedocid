@@ -1,7 +1,5 @@
 package br.com.mariobacellar.geradordocid.util;
 
-import java.text.DecimalFormat;
-
 public class CPFHandler {
 
 	private static final int SIZE_OF_CNPJ = 14;
@@ -24,11 +22,9 @@ public class CPFHandler {
 			int dig009 = (int) (Math.random() * ((max - min) + 1)) + min;
 
 			String dvERRADO = calculaCPFDV_ERRADO(dig001, dig002, dig003, dig004, dig005, dig006, dig007, dig008, dig009);
-
-			String cpf     = "" + dig001 + dig002 + dig003 + dig004 + dig005 + dig006 + dig007 + dig008 + dig009 + dvERRADO;
-			String cpf_fmt = formatCpf(cpf); 
-			
-			String[] ret = new String[] { cpf, cpf_fmt };
+			String cpf      = ""                + dig001+ dig002+ dig003+ dig004+ dig005+ dig006+ dig007+ dig008+ dig009 + dvERRADO;
+			String cpf_fmt  = formatCpf(cpf); 
+			String[] ret    = new String[] { cpf, cpf_fmt };
 			return ret;
 
 		} catch (Exception e) {
